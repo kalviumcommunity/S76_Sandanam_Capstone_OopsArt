@@ -49,8 +49,6 @@ WebSockets (Socket.io) (For real-time notifications)
 AI Recommendations (Suggest art based on user activity)
 Push Notifications (For mobile alerts on new likes, comments, and purchases)
 
-
-
 ### Daily Tasks
 Day 1
 Set up a branching strategy and contribution guidelines.
@@ -72,6 +70,3 @@ Deplying backend
 
 Day 7
 DataBase schema
-
-
-
