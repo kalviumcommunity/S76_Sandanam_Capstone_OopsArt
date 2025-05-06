@@ -9,9 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-
 app.use('/api', itemRoutes);
-
 
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
