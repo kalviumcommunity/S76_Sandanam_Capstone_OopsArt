@@ -3,6 +3,7 @@ const router = express.Router();
 const Item = require('../models/item');
 
 // Create an Item
+
 router.post('/items', async (req, res) => {
   try {
     const newItem = new Item(req.body);
@@ -13,7 +14,9 @@ router.post('/items', async (req, res) => {
   }
 });
 
+
 // Get all Items
+
 router.get('/items', async (req, res) => {
   try {
     const items = await Item.find();
