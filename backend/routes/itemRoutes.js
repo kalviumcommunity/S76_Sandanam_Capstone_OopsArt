@@ -20,6 +20,20 @@ router.get('/items', async (req, res) => {
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }    
+});
+
+// ✅ Update an Item by ID
+router.put('/items/:id', async (req, res) => {
+  try {
+    const updatedData = await Item.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
