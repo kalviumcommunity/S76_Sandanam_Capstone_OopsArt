@@ -70,3 +70,8 @@ Deplying backend
 
 Day 7
 DataBase schema
+
+## 🚀 Deployed Backend
+
+[Click here to access the deployed backend on Render]
+(https://s76-sandanam-capstone-oopsart-1.onrender.com)
