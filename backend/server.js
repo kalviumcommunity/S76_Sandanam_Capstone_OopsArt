@@ -22,3 +22,7 @@ mongoose.connect(process.env.MONGO_URL)
     console.error('❌ Connection failed', err);
   });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to OopsArt!');
+});
+
