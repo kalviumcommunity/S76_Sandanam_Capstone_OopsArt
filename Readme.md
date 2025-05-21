@@ -75,3 +75,7 @@ DataBase schema
 
 [Click here to access the deployed backend on Render]
 (https://s76-sandanam-capstone-oopsart-2.onrender.com)
+
+## 🚀 Frontend Backend
+[Click here to access the deployed frontend on Netlify]
+(https://capable-starburst-12208e.netlify.app/)
