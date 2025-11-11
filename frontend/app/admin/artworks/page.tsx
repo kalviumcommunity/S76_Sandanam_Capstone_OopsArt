@@ -44,8 +44,12 @@ export default function ManageArtworksPage() {
 				...d
 			}))
 			setItems(normalized)
-	+	} catch (err: any) {
-			toast.error(err.message || "Error loading artworks")
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message || "Error loading artworks")
+			} else {
+				toast.error("Error loading artworks")
+			}
 		} finally {
 			setLoading(false)
 		}
@@ -73,8 +77,12 @@ export default function ManageArtworksPage() {
 			setNewQty(1)
 			toast.success("Artwork created")
 			fetchItems()
-		} catch (err: any) {
-			toast.error(err.message || "Create failed")
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message || "Create failed")
+			} else {
+				toast.error("Create failed")
+			}
 		} finally {
 			setCreating(false)
 		}
@@ -97,8 +105,12 @@ export default function ManageArtworksPage() {
 			toast.success("Artwork updated")
 			setEditItem(null)
 			fetchItems()
-		} catch (err: any) {
-			toast.error(err.message || "Update failed")
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message || "Update failed")
+			} else {
+				toast.error("Update failed")
+			}
 		} finally {
 			setUpdatingId(null)
 		}
@@ -111,8 +123,12 @@ export default function ManageArtworksPage() {
 			if (!res.ok && res.status !== 204) throw new Error("Failed to delete")
 			toast.success("Artwork deleted")
 			fetchItems()
-		} catch (err: any) {
-			toast.error(err.message || "Delete failed")
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message || "Delete failed")
+			} else {
+				toast.error("Delete failed")
+			}
 		} finally {
 			setDeletingId(null)
 		}
@@ -224,10 +240,7 @@ export default function ManageArtworksPage() {
 															</div>
 														</div>
 														<DialogFooter>
-															<Button
-																onClick={saveEdit}
-																disabled={updatingId === it.id}
-															>
+															<Button onClick={saveEdit} disabled={updatingId === it.id}>
 																{updatingId === it.id ? "Saving..." : "Save changes"}
 															</Button>
 														</DialogFooter>
@@ -252,5 +265,3 @@ export default function ManageArtworksPage() {
 		</div>
 	)
 }
-
-
