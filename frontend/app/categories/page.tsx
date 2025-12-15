@@ -2,78 +2,79 @@ import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 
-import img1 from "@/image/IMG_20210819_225056.jpg"
-import img2 from "@/image/IMG_20210819_225233.jpg"
-import img3 from "@/image/IMG_20210819_225243.jpg"
-import img4 from "@/image/IMG_20210819_225312.jpg"
-import img5 from "@/image/IMG_20210819_225316.jpg"
-import img6 from "@/image/IMG_20210819_225322.jpg"
-import img7 from "@/image/IMG_20210819_225632.jpg"
-import img8 from "@/image/IMG_20210819_230558.jpg"
-import img9 from "@/image/IMG_20210819_230633.jpg"
+// Image paths for categories
+const img1 = '/image/IMG_20210819_225056.jpg'
+const img2 = '/image/IMG_20210819_225233.jpg'
+const img3 = '/image/IMG_20210819_225243.jpg'
+const img4 = '/image/IMG_20210819_225312.jpg'
+const img5 = '/image/IMG_20210819_225316.jpg'
+const img6 = '/image/IMG_20210819_225322.jpg'
+const img7 = '/image/IMG_20210819_225632.jpg'
+const img8 = '/image/IMG_20210819_230558.jpg'
+const img9 = '/image/IMG_20210819_230633.jpg'
 
 // Mock data for categories
 const categories = [
   {
     name: "Abstract",
     description: "Non-representational art that does not attempt to depict reality",
-    image: img1.src,
+    image: img1,
     count: 1245,
     slug: "abstract",
   },
   {
     name: "Digital Art",
     description: "Art created or modified using digital technology",
-    image: img2.src,
+    image: img2,
     count: 856,
     slug: "digital-art",
   },
   {
     name: "Photography",
     description: "The art of capturing light with a camera to create images",
-    image: img3.src,
+    image: img3,
     count: 642,
     slug: "photography",
   },
   {
     name: "Painting",
     description: "The application of paint to a surface to create art",
-    image: img4.src,
+    image: img4,
     count: 1532,
     slug: "painting",
   },
   {
     name: "Sculpture",
     description: "Three-dimensional art made by shaping materials",
-    image: img5.src,
+    image: img5,
     count: 428,
     slug: "sculpture",
   },
   {
     name: "Mixed Media",
     description: "Art that combines different materials and techniques",
-    image: img6.src,
+    image: img6,
     count: 753,
     slug: "mixed-media",
   },
   {
     name: "Illustration",
     description: "Visual representations that illuminate or elucidate text",
-    image: img7.src,
+    image: img7,
     count: 921,
     slug: "illustration",
   },
   {
     name: "Street Art",
     description: "Art created in public spaces, often with a social message",
-    image: img8.src,
+    image: img8,
     count: 384,
     slug: "street-art",
   },
   {
     name: "Conceptual",
     description: "Art where the concept takes precedence over traditional aesthetics",
-    image: img9.src,
+    image: img9,
     count: 512,
     slug: "conceptual",
   },

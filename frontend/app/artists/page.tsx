@@ -6,22 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search } from "lucide-react"
 
-import imgA from "@/image/IMG_20210819_231031.jpg"
-import imgB from "@/image/IMG_20210819_231145.jpg"
-import imgC from "@/image/IMG_20210819_231315.jpg"
-import imgD from "@/image/IMG_20210819_231327.jpg"
-import imgE from "@/image/IMG_20210819_231354.jpg"
-import imgF from "@/image/IMG_20210819_231420.jpg"
-import imgG from "@/image/IMG_20210819_231431.jpg"
-import imgH from "@/image/IMG_20210819_231442.jpg"
-
 // Mock data for artists
 const artists = [
   {
     id: 1,
     name: "Elena Rivera",
     username: "elenaart",
-    avatar: imgA.src,
+    avatar: "https://i.pravatar.cc/300?img=1",
     bio: "Contemporary abstract artist specializing in vibrant acrylics and mixed media.",
     followers: 1240,
     artworks: 48,
@@ -30,7 +21,7 @@ const artists = [
     id: 2,
     name: "Marcus Chen",
     username: "marcusdesigns",
-    avatar: imgB.src,
+    avatar: "https://i.pravatar.cc/300?img=5",
     bio: "Digital artist creating surreal landscapes and futuristic cityscapes.",
     followers: 890,
     artworks: 36,
@@ -39,7 +30,7 @@ const artists = [
     id: 3,
     name: "Sophia Johnson",
     username: "sophiaj",
-    avatar: imgC.src,
+    avatar: "https://i.pravatar.cc/300?img=9",
     bio: "Traditional oil painter with a focus on portraits and emotional storytelling.",
     followers: 2150,
     artworks: 72,
@@ -48,7 +39,7 @@ const artists = [
     id: 4,
     name: "Alex Kim",
     username: "alexcreates",
-    avatar: imgD.src,
+    avatar: "https://i.pravatar.cc/300?img=13",
     bio: "Experimental artist working with digital media and interactive installations.",
     followers: 760,
     artworks: 29,
@@ -57,7 +48,7 @@ const artists = [
     id: 5,
     name: "Jordan Taylor",
     username: "jordantart",
-    avatar: imgE.src,
+    avatar: "https://i.pravatar.cc/300?img=17",
     bio: "Photographer capturing urban landscapes and street culture.",
     followers: 1560,
     artworks: 104,
@@ -66,7 +57,7 @@ const artists = [
     id: 6,
     name: "Maya Patel",
     username: "mayapatels",
-    avatar: imgF.src,
+    avatar: "https://i.pravatar.cc/300?img=21",
     bio: "Sculptor working with sustainable materials to create environmental statements.",
     followers: 980,
     artworks: 42,
@@ -75,7 +66,7 @@ const artists = [
     id: 7,
     name: "Leo Garcia",
     username: "leogarcia",
-    avatar: imgG.src,
+    avatar: "https://i.pravatar.cc/300?img=25",
     bio: "Mixed media artist exploring cultural identity through collage and assemblage.",
     followers: 1120,
     artworks: 67,
@@ -84,73 +75,93 @@ const artists = [
     id: 8,
     name: "Zoe Williams",
     username: "zoewilliams",
-    avatar: imgH.src,
+    avatar: "https://i.pravatar.cc/300?img=29",
     bio: "Illustrator creating whimsical characters and fantastical worlds.",
     followers: 2340,
     artworks: 89,
-  },
+  }
 ]
 
 export default function ArtistsPage() {
   return (
-    <div className="container px-4 py-8 md:px-6 md:py-12">
-      <div className="space-y-8">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Artists</h1>
-          <p className="text-muted-foreground">Discover talented artists from around the world.</p>
-        </div>
+    <div className="container mx-auto px-4 py-12">
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-bold mb-4">Artists</h1>
+        <p className="text-xl text-muted-foreground">Discover talented artists from around the world.</p>
+      </div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="Search artists..." className="pl-8" />
-          </div>
-          <div className="flex items-center gap-2">
-            <Select defaultValue="popular">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="popular">Most Popular</SelectItem>
-                <SelectItem value="newest">Newest</SelectItem>
-                <SelectItem value="artworks">Most Artworks</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="relative w-full md:w-96">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search artists..."
+            className="pl-10 w-full"
+          />
         </div>
+        <div className="flex gap-4 w-full md:w-auto">
+          <Select defaultValue="popular">
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="popular">Most Popular</SelectItem>
+              <SelectItem value="newest">Newest</SelectItem>
+              <SelectItem value="name">Name (A-Z)</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select defaultValue="all">
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="painting">Painting</SelectItem>
+              <SelectItem value="digital">Digital Art</SelectItem>
+              <SelectItem value="photography">Photography</SelectItem>
+              <SelectItem value="sculpture">Sculpture</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {artists.map((artist) => (
-            <Card key={artist.id}>
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <Avatar className="h-24 w-24 mb-4">
-                    <AvatarImage src={artist.avatar} alt={artist.name} />
-                    <AvatarFallback>{artist.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <Link href={`/artist/${artist.username}`}>
-                    <h3 className="font-bold text-lg">{artist.name}</h3>
-                  </Link>
-                  <p className="text-sm text-muted-foreground mb-3">@{artist.username}</p>
-                  <p className="text-sm mb-4 line-clamp-2">{artist.bio}</p>
-                  <div className="flex justify-between w-full mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {artists.map((artist) => (
+          <Card key={artist.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
+            <Link href={`/artist/${artist.username}`} className="block">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="relative group-hover:scale-105 transition-transform">
+                    <Avatar className="h-24 w-24 border-4 border-primary/20">
+                      <AvatarImage src={artist.avatar} alt={artist.name} />
+                      <AvatarFallback>{artist.name[0]}</AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">{artist.name}</h3>
+                    <p className="text-sm text-muted-foreground">@{artist.username}</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{artist.bio}</p>
+                  <div className="flex justify-between w-full text-sm">
                     <div className="text-center">
-                      <p className="font-bold">{artist.followers}</p>
-                      <p className="text-xs text-muted-foreground">Followers</p>
+                      <div className="font-semibold">{artist.followers.toLocaleString()}</div>
+                      <div className="text-muted-foreground">Followers</div>
                     </div>
                     <div className="text-center">
-                      <p className="font-bold">{artist.artworks}</p>
-                      <p className="text-xs text-muted-foreground">Artworks</p>
+                      <div className="font-semibold">{artist.artworks}</div>
+                      <div className="text-muted-foreground">Artworks</div>
                     </div>
                   </div>
-                  <Button className="w-full" variant="outline" asChild>
-                    <Link href={`/artist/${artist.username}`}>View Profile</Link>
-                  </Button>
                 </div>
               </CardContent>
-            </Card>
-          ))}
-        </div>
+            </Link>
+            <div className="px-6 pb-6 pt-0">
+              <Button asChild variant="outline" className="w-full">
+                <Link href={`/artist/${artist.username}`}>View Profile</Link>
+              </Button>
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
   )

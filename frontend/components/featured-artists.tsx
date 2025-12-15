@@ -3,13 +3,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
-// Mock data for featured artists
+// Mock data for featured artists with actual profile pictures
 const artists = [
   {
     id: 1,
     name: "Elena Rivera",
     username: "elenaart",
-    avatar: "/placeholder.svg?height=100&width=100",
+    avatar: "https://i.pravatar.cc/300?img=1",
     bio: "Contemporary abstract artist specializing in vibrant acrylics and mixed media.",
     followers: 1240,
     artworks: 48,
@@ -18,7 +18,7 @@ const artists = [
     id: 2,
     name: "Marcus Chen",
     username: "marcusdesigns",
-    avatar: "/placeholder.svg?height=100&width=100",
+    avatar: "https://i.pravatar.cc/300?img=5",
     bio: "Digital artist creating surreal landscapes and futuristic cityscapes.",
     followers: 890,
     artworks: 36,
@@ -27,7 +27,7 @@ const artists = [
     id: 3,
     name: "Sophia Johnson",
     username: "sophiaj",
-    avatar: "/placeholder.svg?height=100&width=100",
+    avatar: "https://i.pravatar.cc/300?img=9",
     bio: "Traditional oil painter with a focus on portraits and emotional storytelling.",
     followers: 2150,
     artworks: 72,
@@ -36,41 +36,73 @@ const artists = [
     id: 4,
     name: "Alex Kim",
     username: "alexcreates",
-    avatar: "/placeholder.svg?height=100&width=100",
+    avatar: "https://i.pravatar.cc/300?img=13",
     bio: "Experimental artist working with digital media and interactive installations.",
     followers: 760,
     artworks: 29,
   },
+  {
+    id: 5,
+    name: "Jordan Taylor",
+    username: "jordantart",
+    avatar: "https://i.pravatar.cc/300?img=17",
+    bio: "Photographer capturing urban landscapes and street culture.",
+    followers: 1560,
+    artworks: 104,
+  },
+  {
+    id: 6,
+    name: "Maya Patel",
+    username: "mayapatels",
+    avatar: "https://i.pravatar.cc/300?img=21",
+    bio: "Sculptor working with sustainable materials to create environmental statements.",
+    followers: 980,
+    artworks: 42,
+  },
+  {
+    id: 7,
+    name: "Leo Garcia",
+    username: "leogarcia",
+    avatar: "https://i.pravatar.cc/300?img=25",
+    bio: "Mixed media artist exploring cultural identity through collage and assemblage.",
+    followers: 1120,
+    artworks: 67,
+  },
+  {
+    id: 8,
+    name: "Zoe Williams",
+    username: "zoewilliams",
+    avatar: "https://i.pravatar.cc/300?img=29",
+    bio: "Illustrator creating whimsical characters and fantastical worlds.",
+    followers: 2340,
+    artworks: 89,
+  }
 ]
 
 export function FeaturedArtists() {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {artists.map((artist) => (
-        <Card key={artist.id}>
-          <CardContent className="pt-6">
-            <div className="flex flex-col items-center text-center">
-              <Avatar className="h-24 w-24 mb-4">
-                <AvatarImage src={artist.avatar || "/placeholder.svg"} alt={artist.name} />
-                <AvatarFallback>{artist.name[0]}</AvatarFallback>
+        <Card key={artist.id} className="h-full flex flex-col">
+          <CardContent className="p-6 flex-grow flex flex-col">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <Avatar className="h-24 w-24 border-4 border-primary/20">
+                <AvatarImage src={artist.avatar} alt={artist.name} />
+                <AvatarFallback>{artist.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <Link href={`/artist/${artist.username}`}>
-                <h3 className="font-bold text-lg">{artist.name}</h3>
-              </Link>
-              <p className="text-sm text-muted-foreground mb-3">@{artist.username}</p>
-              <p className="text-sm mb-4 line-clamp-2">{artist.bio}</p>
-              <div className="flex justify-between w-full mb-4">
-                <div className="text-center">
-                  <p className="font-bold">{artist.followers}</p>
-                  <p className="text-xs text-muted-foreground">Followers</p>
-                </div>
-                <div className="text-center">
-                  <p className="font-bold">{artist.artworks}</p>
-                  <p className="text-xs text-muted-foreground">Artworks</p>
-                </div>
+              <div>
+                <h3 className="text-xl font-bold">{artist.name}</h3>
+                <p className="text-sm text-muted-foreground">@{artist.username}</p>
               </div>
-              <Button className="w-full" variant="outline" asChild>
-                <Link href={`/artist/${artist.username}`}>View Profile</Link>
+              <p className="text-sm text-muted-foreground flex-grow">
+                {artist.bio}
+              </p>
+              <div className="flex justify-between w-full text-sm text-muted-foreground">
+                <span>{artist.followers.toLocaleString()} followers</span>
+                <span>{artist.artworks} artworks</span>
+              </div>
+              <Button asChild variant="outline" size="sm" className="w-full mt-2">
+                <Link href={`/artists/${artist.username}`}>View Profile</Link>
               </Button>
             </div>
           </CardContent>
