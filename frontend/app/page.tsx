@@ -2,79 +2,160 @@ import Link from "next/link"
 import { ArtFeed } from "@/components/art-feed"
 import { FeaturedArtists } from "@/components/featured-artists"
 import { Button } from "@/components/ui/button"
-import { Brush, Search, TrendingUp } from "lucide-react"
+import { Brush, Search, Sparkles, TrendingUp, Users } from "lucide-react"
+
+// Reusable section component
+const Section = ({ 
+  children, 
+  bg = 'light',
+  fullHeight = true,
+  id = '',
+  className = ''
+}: { 
+  children: React.ReactNode, 
+  bg?: 'light' | 'dark' | 'gradient',
+  fullHeight?: boolean,
+  id?: string,
+  className?: string
+}) => {
+  const bgClasses = {
+    light: 'bg-white dark:bg-gray-900',
+    dark: 'bg-gray-50 dark:bg-gray-950',
+    gradient: 'bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'
+  }
+
+  return (
+    <section 
+      id={id}
+      className={`w-full ${fullHeight ? 'min-h-[calc(100vh-80px)]' : 'py-20 md:py-32'} flex items-center justify-center ${bgClasses[bg]} ${className}`}
+    >
+      <div className="container px-4 md:px-6 mx-auto">
+        <div className="max-w-6xl mx-auto">
+          {children}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Reusable section header component with size prop
+const SectionHeader = ({
+  title,
+  subtitle,
+  icon: Icon = Sparkles,
+  highlight = '',
+  size = 'lg' // 'sm' | 'md' | 'lg'
+}: {
+  title: string | React.ReactNode,
+  subtitle: string | React.ReactNode,
+  icon?: React.ComponentType<{ className?: string }>,
+  highlight?: string,
+  size?: 'sm' | 'md' | 'lg'
+}) => {
+  const titleSizes = {
+    sm: 'text-4xl',
+    md: 'text-5xl',
+    lg: 'text-6xl md:text-7xl lg:text-8xl'
+  }
+
+  const subtitleSizes = {
+    sm: 'text-xl',
+    md: 'text-2xl',
+    lg: 'text-2l md:text-4xl'
+  }
+
+  return (
+    <div className="text-center w-full max-w-6xl mx-auto mb-8">
+      {highlight && (
+        <div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary dark:bg-primary/20 mb-4">
+          <Icon className="mr-2 h-4 w-4" />
+          {highlight}
+        </div>
+      )}
+      <h2 className={`${titleSizes[size]} font-bold tracking-tight leading-none`}>
+        {title}
+      </h2>
+      <div className={`mt-3 ${subtitleSizes[size]} text-muted-foreground max-w-4xl mx-auto leading-relaxed`}>
+        {subtitle}
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                  Discover and Collect Unique Artwork
-                </h1>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  OopsArt connects artists with art enthusiasts. Buy, sell, and showcase your creativity on our
-                  platform.
-                </p>
-              </div>
-              <div className="space-x-4">
-                <Button asChild>
-                  <Link href="/explore">
-                    <Search className="mr-2 h-4 w-4" />
-                    Explore Art
-                  </Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link href="/upload">
-                    <Brush className="mr-2 h-4 w-4" />
-                    Start Selling
-                  </Link>
-                </Button>
-              </div>
+        {/* Hero Section */}
+        <Section bg="gradient" id="home" className="pt-4">
+          <div className="text-center space-y-4 w-full">
+            <SectionHeader 
+              title={
+                <div className="flex flex-col items-center justify-center">
+                  <span className="block text-4xl md:text-7xl lg:text-8xl font-black leading-none mb-2 md:mb-4">
+                    Discover and Collect
+                  </span>
+                  <span className="block text-3xl md:text-6xl lg:text-7xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+                    Unique Artwork
+                  </span>
+                </div>
+              }
+              subtitle={
+                <div className="text-lg md:text-3xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                  OopsArt connects artists with art enthusiasts. Buy, sell, and showcase your creativity on our platform.
+                </div>
+              }
+              highlight="Welcome to OopsArt"
+            />
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+              <Button asChild size="lg" className="px-8 py-6 text-lg">
+                <Link href="/explore" className="flex items-center gap-2">
+                  <Search className="h-5 w-5" />
+                  Explore Art
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" className="px-8 py-6 text-lg" asChild>
+                <Link href="/upload" className="flex items-center gap-2">
+                  <Brush className="h-5 w-5" />
+                  Start Selling
+                </Link>
+              </Button>
             </div>
           </div>
-        </section>
+        </Section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                  <div className="flex items-center">
-                    <TrendingUp className="mr-1 h-4 w-4" />
-                    <span>Trending Now</span>
-                  </div>
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Explore Trending Artwork</h2>
-                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Discover the most popular pieces from talented artists around the world.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-1">
+        {/* Trending Artwork Section */}
+        <Section bg="light" id="trending">
+          <div className="text-center w-full">
+            <SectionHeader 
+              title="Explore Trending Artwork"
+              subtitle="Discover the most popular pieces from talented artists around the world."
+              icon={TrendingUp}
+              highlight="Trending Now"
+              size="sm"  // This makes it smaller
+            />
+            <div className="mt-8 text-left">
               <ArtFeed />
             </div>
           </div>
-        </section>
+        </Section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Featured Artists</h2>
-                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Meet the creators behind the most extraordinary pieces on OopsArt.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12">
+        {/* Featured Artists Section */}
+        <Section bg="dark" id="artists">
+          <div className="text-center w-full">
+            <SectionHeader 
+              title="Featured Artists"
+              subtitle="Meet the creators behind the most extraordinary pieces on OopsArt."
+              icon={Users}
+              highlight="Creative Minds"
+              size="md"  // Medium size
+            />
+            <div className="mt-8 text-left">
               <FeaturedArtists />
             </div>
           </div>
-        </section>
+        </Section>
       </main>
     </div>
   )

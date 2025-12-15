@@ -1,15 +1,21 @@
 import type React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Brush } from "lucide-react"
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        <Brush className="h-6 w-6" />
-        <span className="inline-block font-bold">OopsArt</span>
+        <Image 
+          src="/logo-white.png" 
+          alt="OopsArt Logo" 
+          width={150} 
+          height={50} 
+          className="h-12 w-auto object-contain"
+          priority
+        />
       </Link>
       <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)} {...props}>
         <Button asChild variant="link">

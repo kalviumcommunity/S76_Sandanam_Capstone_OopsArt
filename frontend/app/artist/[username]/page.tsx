@@ -7,55 +7,127 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Instagram, Twitter, Globe, MapPin } from "lucide-react"
 
+// Image configuration for the artist page
+const getArtistImages = (username: string) => {
+  // Base path for images in the public folder (no need for /public in the path)
+  const basePath = '/image/';
+  
+  // All available image filenames
+  const allImages = [
+    'IMG_20210819_225056.jpg',
+    'IMG_20210819_225233.jpg',
+    'IMG_20210819_225243.jpg',
+    'IMG_20210819_225312.jpg',
+    'IMG_20210819_225316.jpg',
+    'IMG_20210819_225322.jpg',
+    'IMG_20210819_225632.jpg',
+    'IMG_20210819_230558.jpg',
+    'IMG_20210819_230633.jpg',
+    'IMG_20210819_230709.jpg',
+    'IMG_20210819_230719.jpg',
+    'IMG_20210819_230728.jpg',
+    'IMG_20210819_230740.jpg',
+    'IMG_20210819_230759.jpg',
+    'IMG_20210819_231031.jpg',
+    'IMG_20210819_231145.jpg',
+    'IMG_20210819_231315.jpg',
+    'IMG_20210819_231327.jpg',
+    'IMG_20210819_231354.jpg',
+    'IMG_20210819_231420.jpg',
+    'IMG_20210819_231431.jpg',
+    'IMG_20210819_231442.jpg'
+  ].map(img => ({
+    src: basePath + img,
+    alt: `Artwork ${img.split('_').pop()?.split('.')[0] || ''}`
+  }));
+
+  // Create a deterministic index based on username
+  const getIndex = (str: string, max: number) => {
+    return str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % max;
+  };
+
+  const avatarIndex = getIndex(username, 4);
+  const coverIndex = getIndex(username + 'cover', 4);
+  
+  // Ensure we have enough images
+  const safeIndex = (idx: number) => Math.min(idx, allImages.length - 1);
+  
+  return {
+    avatar: allImages[safeIndex(avatarIndex)].src,
+    cover: allImages[safeIndex(coverIndex + 4)].src,
+    artworks: allImages.slice(0, 6).map(img => img.src),
+    // Include alt text for better accessibility
+    getAlt: (idx: number) => allImages[safeIndex(idx)]?.alt || 'Artwork'
+  };
+};
+
+// Get images based on username
+const getArtistImagesData = (username: string) => {
+  if (!username) {
+    // Fallback for undefined or empty username
+    username = 'default';
+  }
+  
+  // These are the known usernames we support
+  const knownUsernames = ['elenaart', 'marcusdesigns', 'sophiaj', 'alexcreates'];
+  
+  try {
+    // If it's a known username, use the same index for consistency
+    // Otherwise, generate based on the username
+    const index = knownUsernames.includes(username) 
+      ? knownUsernames.indexOf(username) 
+      : username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 4;
+      
+    return getArtistImages(knownUsernames[Math.min(index, knownUsernames.length - 1)] || username);
+  } catch (error) {
+    console.error('Error getting artist images:', error);
+    // Return default images if there's an error
+    return getArtistImages('default');
+  }
+};
+
 // This would be replaced with a database query in a real application
 function getArtist(username: string) {
-  return {
+  const defaultData = {
     id: 1,
-    name: "Elena Rivera",
+    name: username.charAt(0).toUpperCase() + username.slice(1),
     username: username,
-    avatar: "/placeholder.svg?height=200&width=200",
-    coverImage: "/placeholder.svg?height=400&width=1200",
-    bio: "Contemporary abstract artist specializing in vibrant acrylics and mixed media. My work explores the relationship between urban environments and natural elements, creating dynamic compositions that invite viewers to find their own meaning within the abstract forms.",
-    location: "New York, USA",
-    website: "www.elenarivers-art.com",
-    followers: 1240,
-    following: 385,
-    artworks: 48,
+    bio: "Passionate artist creating unique pieces that inspire and captivate. My work is a reflection of my journey through different styles and mediums.",
+    location: "Chennai, India",
+    website: `www.${username}.art`,
+    followers: Math.floor(Math.random() * 5000) + 500,
+    following: Math.floor(Math.random() * 200) + 50,
     socialMedia: {
-      instagram: "elenarivera_art",
-      twitter: "elenarivera_art",
+      instagram: username,
+      twitter: username,
     },
     featuredArtworks: [
-      {
-        id: 1,
-        title: "Abstract Harmony",
-        image: "/placeholder.svg?height=400&width=400",
-        price: 299.99,
-      },
-      {
-        id: 2,
-        title: "Urban Flow",
-        image: "/placeholder.svg?height=400&width=400",
-        price: 349.99,
-      },
-      {
-        id: 3,
-        title: "Chromatic Dreams",
-        image: "/placeholder.svg?height=400&width=400",
-        price: 279.99,
-      },
-      {
-        id: 4,
-        title: "Structural Balance",
-        image: "/placeholder.svg?height=400&width=400",
-        price: 399.99,
-      },
+      { id: 1, title: "Morning Serenity", price: 249.99 },
+      { id: 2, title: "Urban Rhythms", price: 329.99 },
+      { id: 3, title: "Ethereal Dreams", price: 279.99 },
+      { id: 4, title: "Harmonic Balance", price: 359.99 },
     ],
+  }
+
+  // Get images for this username
+  const images = getArtistImagesData(username || 'default')
+
+  return {
+    ...defaultData,
+    avatar: images.avatar,
+    coverImage: images.cover,
+    artworks: images.artworks.length,
+    featuredArtworks: defaultData.featuredArtworks.map((artwork, index) => ({
+      ...artwork,
+      image: images.artworks[index % images.artworks.length]
+    })),
   }
 }
 
-export default function ArtistProfilePage({ params }: { params: { username: string } }) {
-  const artist = getArtist(params.username)
+export default async function ArtistProfilePage({ params }: { params: { username: string } }) {
+  // In Next's App Router, params may be async — await it before accessing properties
+  const { username } = await params as { username: string }
+  const artist = getArtist(username)
 
   return (
     <div>

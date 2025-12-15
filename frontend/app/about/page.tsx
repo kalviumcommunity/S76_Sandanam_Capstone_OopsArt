@@ -2,7 +2,50 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Brush, Heart, ShoppingBag, Users } from "lucide-react"
+import { Brush, Heart, ShoppingBag, Users, Instagram, Twitter, Linkedin } from "lucide-react"
+
+const teamMembers = [
+  {
+    name: "Sandhanam",
+    role: "Founder & CEO",
+    image: "/image/Sandhanam.jpeg",
+    social: {
+      twitter: "#",
+      instagram: "#",
+      linkedin: "#"
+    }
+  },
+  {
+    name: "Akarshana",
+    role: "Lead Designer",
+    image: "/image/akarshana.jpeg",
+    social: {
+      twitter: "#",
+      instagram: "#",
+      linkedin: "#"
+    }
+  },
+  {
+    name: "Abhinives",
+    role: "Tech Lead",
+    image: "/image/Abhinivesh.jpeg",
+    social: {
+      twitter: "#",
+      instagram: "#",
+      linkedin: "#"
+    }
+  },
+  {
+    name: "Sriman",
+    role: "Marketing Head",
+    image: "/image/Sriman.jpeg",
+    social: {
+      twitter: "#",
+      instagram: "#",
+      linkedin: "#"
+    }
+  }
+]
 
 export default function AboutPage() {
   return (
@@ -29,13 +72,26 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="relative aspect-video overflow-hidden rounded-lg">
-            <Image src="/placeholder.svg?height=400&width=600" alt="OopsArt mission" fill className="object-cover" />
+            <Image 
+              src="/image/all.jpeg"
+              alt="Our team working together" 
+              fill 
+              className="object-cover" 
+              priority
+              unoptimized
+            />
           </div>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">
           <div className="relative order-2 aspect-video overflow-hidden rounded-lg md:order-1">
-            <Image src="/placeholder.svg?height=400&width=600" alt="OopsArt story" fill className="object-cover" />
+            <Image 
+              src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+              alt="Team collaborating on digital art" 
+              fill 
+              className="object-cover"
+              priority
+            />
           </div>
           <div className="order-1 space-y-4 md:order-2">
             <h2 className="text-3xl font-bold">Our Story</h2>
@@ -111,38 +167,66 @@ export default function AboutPage() {
         <div className="space-y-8">
           <h2 className="text-center text-3xl font-bold">Meet Our Team</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                name: "Alex Morgan",
-                role: "Founder & CEO",
-                image: "/placeholder.svg?height=200&width=200",
-              },
-              {
-                name: "Jamie Chen",
-                role: "Creative Director",
-                image: "/placeholder.svg?height=200&width=200",
-              },
-              {
-                name: "Taylor Wilson",
-                role: "Head of Curation",
-                image: "/placeholder.svg?height=200&width=200",
-              },
-              {
-                name: "Jordan Smith",
-                role: "Community Manager",
-                image: "/placeholder.svg?height=200&width=200",
-              },
-            ].map((person, i) => (
-              <Card key={i}>
-                <CardContent className="flex flex-col items-center p-6 text-center">
-                  <div className="relative h-24 w-24 overflow-hidden rounded-full">
-                    <Image src={person.image || "/placeholder.svg"} alt={person.name} fill className="object-cover" />
-                  </div>
-                  <h3 className="mt-4 font-bold">{person.name}</h3>
-                  <p className="text-sm text-muted-foreground">{person.role}</p>
-                </CardContent>
-              </Card>
-            ))}
+            <Card>
+              <CardContent className="flex flex-col items-center p-6 text-center">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted">
+                  <Image 
+                    src="/image/Sandhanam.jpeg" 
+                    alt="Sandhanam" 
+                    fill 
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-bold">Sandhanam</h3>
+                <p className="text-muted-foreground">Founder & CEO</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="flex flex-col items-center p-6 text-center">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted">
+                  <Image 
+                    src="/image/akarshana.jpeg" 
+                    alt="Akarshana" 
+                    fill 
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-bold">Akarshana</h3>
+                <p className="text-muted-foreground">Lead Designer</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="flex flex-col items-center p-6 text-center">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted">
+                  <Image 
+                    src="/image/Abhinivesh.jpeg" 
+                    alt="Abhinives" 
+                    fill 
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-bold">Abhinives</h3>
+                <p className="text-muted-foreground">Tech Lead</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="flex flex-col items-center p-6 text-center">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted">
+                  <Image 
+                    src="/image/Sriman.jpeg" 
+                    alt="Sriman" 
+                    fill 
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-bold">Sriman</h3>
+                <p className="text-muted-foreground">Marketing Head</p>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
