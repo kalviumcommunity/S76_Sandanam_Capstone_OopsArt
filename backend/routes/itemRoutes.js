@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/item');
 
-// Create an Item
-router.post('/items', async (req, res) => {
+const auth = require('../middleware/auth')
+
+// Create an Item (protected)
+router.post('/items', auth, async (req, res) => {
   try {
     const newItem = new Item(req.body);
     await newItem.save();
@@ -23,8 +25,8 @@ router.get('/items', async (req, res) => {
   }    
 });
 
-// ✅ Update an Item by ID
-router.put('/items/:id', async (req, res) => {
+// ✅ Update an Item by ID (protected)
+router.put('/items/:id', auth, async (req, res) => {
   try {
     const updatedData = await Item.findByIdAndUpdate(
       req.params.id,
@@ -37,8 +39,8 @@ router.put('/items/:id', async (req, res) => {
   }
 });
 
-// ✅ Delete an Item by ID
-router.delete('/items/:id', async (req, res) => {
+// ✅ Delete an Item by ID (protected)
+router.delete('/items/:id', auth, async (req, res) => {
   try {
     const deleted = await Item.findByIdAndDelete(req.params.id);
     if (!deleted) {

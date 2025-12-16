@@ -16,6 +16,8 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>
   signup: (name: string, email: string, password: string, role: "user" | "artist") => Promise<void>
   logout: () => void
+    refreshUser: () => Promise<void>
+    updateProfile: (payload: any) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -27,65 +29,70 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Check if user is logged in on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("oopsart_user")
-    if (storedUser) {
+    const token = localStorage.getItem('oopsart_token')
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser))
     }
     setIsLoading(false)
   }, [])
 
-  // Mock login function - would connect to a real backend in production
+  // Real login/signup using backend API
   const login = async (email: string, password: string) => {
     setIsLoading(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Mock users for demo purposes
-    const mockUsers = [
-      { id: "1", name: "Art Lover", email: "user@example.com", password: "password", role: "user" as const },
-      { id: "2", name: "Elena Rivera", email: "artist@example.com", password: "password", role: "artist" as const },
-      { id: "3", name: "Admin User", email: "admin@example.com", password: "password", role: "admin" as const },
-    ]
-
-    const foundUser = mockUsers.find((u) => u.email === email && u.password === password)
-
-    if (!foundUser) {
+    try {
+      const res = await (await import('@/lib/api')).api.login(email, password)
+      const { token, user: u } = res
+      localStorage.setItem('oopsart_token', token)
+      localStorage.setItem('oopsart_user', JSON.stringify(u))
+      setUser(u)
+    } finally {
       setIsLoading(false)
-      throw new Error("Invalid email or password")
     }
-
-    const { password: _, ...userWithoutPassword } = foundUser
-    setUser(userWithoutPassword)
-    localStorage.setItem("oopsart_user", JSON.stringify(userWithoutPassword))
-    setIsLoading(false)
   }
 
-  // Mock signup function
   const signup = async (name: string, email: string, password: string, role: "user" | "artist") => {
     setIsLoading(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // In a real app, we would send this data to an API
-    const newUser = {
-      id: Math.random().toString(36).substring(2, 9),
-      name,
-      email,
-      role,
+    try {
+      const res = await (await import('@/lib/api')).api.register(name, email, password, role)
+      const { token, user: u } = res
+      localStorage.setItem('oopsart_token', token)
+      localStorage.setItem('oopsart_user', JSON.stringify(u))
+      setUser(u)
+    } finally {
+      setIsLoading(false)
     }
-
-    setUser(newUser)
-    localStorage.setItem("oopsart_user", JSON.stringify(newUser))
-    setIsLoading(false)
   }
 
   const logout = () => {
     setUser(null)
     localStorage.removeItem("oopsart_user")
+    localStorage.removeItem('oopsart_token')
   }
 
-  return <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>{children}</AuthContext.Provider>
+  const refreshUser = async () => {
+    try {
+      const res = await (await import('@/lib/api')).api.getMe()
+      const u = res.user
+      localStorage.setItem('oopsart_user', JSON.stringify(u))
+      setUser(u)
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  const updateProfile = async (payload: any) => {
+    setIsLoading(true)
+    try {
+      const res = await (await import('@/lib/api')).api.updateMe(payload)
+      const u = res.user
+      localStorage.setItem('oopsart_user', JSON.stringify(u))
+      setUser(u)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return <AuthContext.Provider value={{ user, isLoading, login, signup, logout, refreshUser, updateProfile }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

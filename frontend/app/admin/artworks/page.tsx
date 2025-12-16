@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { api } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -36,9 +37,7 @@ export default function ManageArtworksPage() {
 	const fetchItems = async () => {
 		setLoading(true)
 		try {
-			const res = await fetch(`${apiBase}/api/items`, { cache: "no-store" })
-			if (!res.ok) throw new Error("Failed to load items")
-			const data = await res.json()
+			const data = await api.getItems()
 			const normalized: Item[] = data.map((d: any) => ({
 				id: d._id,
 				...d
@@ -67,12 +66,7 @@ export default function ManageArtworksPage() {
 		}
 		setCreating(true)
 		try {
-			const res = await fetch(`${apiBase}/api/items`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name: newName.trim(), quantity: Number(newQty) || 0 })
-			})
-			if (!res.ok) throw new Error("Failed to create")
+			await api.createItem({ name: newName.trim(), quantity: Number(newQty) || 0 })
 			setNewName("")
 			setNewQty(1)
 			toast.success("Artwork created")
@@ -96,12 +90,7 @@ export default function ManageArtworksPage() {
 		if (!editItem) return
 		setUpdatingId(editItem.id)
 		try {
-			const res = await fetch(`${apiBase}/api/items/${editItem.id}`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name: editItem.name, quantity: Number(editItem.quantity) || 0 })
-			})
-			if (!res.ok) throw new Error("Failed to update")
+			await api.updateItem(editItem.id, { name: editItem.name, quantity: Number(editItem.quantity) || 0 })
 			toast.success("Artwork updated")
 			setEditItem(null)
 			fetchItems()
@@ -119,8 +108,7 @@ export default function ManageArtworksPage() {
 	const deleteItem = async (id: string) => {
 		setDeletingId(id)
 		try {
-			const res = await fetch(`${apiBase}/api/items/${id}`, { method: "DELETE" })
-			if (!res.ok && res.status !== 204) throw new Error("Failed to delete")
+			await api.deleteItem(id)
 			toast.success("Artwork deleted")
 			fetchItems()
 		} catch (err) {

@@ -143,3 +143,13 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+
+/* Hide the Next.js developer "issues" / devtools indicator in local dev
+   (id added by the dev client: #devtools-indicator). This removes the red
+   "1 Issue" badge from the page while you are developing. */
+#devtools-indicator,
+[data-nextjs-toast],
+[data-next-badge-root],
+[data-next-badge] {
+  display: none !important;
+}

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Instagram, Twitter, Globe, MapPin } from "lucide-react"
+import ArtistArtworks from '@/components/artist-artworks'
 
 // Image configuration for the artist page
 const getArtistImages = (username: string) => {
@@ -95,8 +96,9 @@ function getArtist(username: string) {
     bio: "Passionate artist creating unique pieces that inspire and captivate. My work is a reflection of my journey through different styles and mediums.",
     location: "Chennai, India",
     website: `www.${username}.art`,
-    followers: Math.floor(Math.random() * 5000) + 500,
-    following: Math.floor(Math.random() * 200) + 50,
+    // Deterministic follower/following numbers based on username to avoid hydration mismatch
+    followers: 500 + (username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 5000),
+    following: 50 + (username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 200),
     socialMedia: {
       instagram: username,
       twitter: username,
@@ -128,6 +130,9 @@ export default async function ArtistProfilePage({ params }: { params: { username
   // In Next's App Router, params may be async — await it before accessing properties
   const { username } = await params as { username: string }
   const artist = getArtist(username)
+  // The interactive artwork list (edit/delete) is implemented in the
+  // client component `ArtistArtworks`. Keep this server component purely
+  // for rendering static content and pass `featuredArtworks` as initial data.
 
   return (
     <div>
@@ -179,26 +184,7 @@ export default async function ArtistProfilePage({ params }: { params: { username
                     </Button>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {artist.featuredArtworks.map((artwork) => (
-                    <Card key={artwork.id} className="overflow-hidden">
-                      <Link href={`/artwork/${artwork.id}`}>
-                        <div className="relative aspect-square">
-                          <Image
-                            src={artwork.image || "/placeholder.svg"}
-                            alt={artwork.title}
-                            fill
-                            className="object-cover transition-transform hover:scale-105"
-                          />
-                        </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-medium">{artwork.title}</h3>
-                          <p className="font-bold">${artwork.price}</p>
-                        </CardContent>
-                      </Link>
-                    </Card>
-                  ))}
-                </div>
+                <ArtistArtworks username={username} initialArtworks={artist.featuredArtworks} />
               </TabsContent>
               <TabsContent value="collections" className="space-y-6">
                 <h2 className="text-xl font-semibold">Collections</h2>
