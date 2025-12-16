@@ -29,15 +29,19 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        'bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
+        // Use Tailwind's `theme()` in arbitrary property so the compiled CSS contains
+        // a concrete spacing value (e.g. `--cell-size: 2rem`) instead of an invalid
+        // `var(--spacing(8))` token which breaks the PostCSS parser.
+        'bg-background group/calendar p-3 [--cell-size:theme(spacing.8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className,
       )}
       captionLayout={captionLayout}
-      formatters={{
+        formatters={{
+        // Use a fixed locale to prevent server/client locale mismatches during SSR
         formatMonthDropdown: (date) =>
-          date.toLocaleString('default', { month: 'short' }),
+          date.toLocaleString('en-US', { month: 'short' }),
         ...formatters,
       }}
       classNames={{
@@ -190,7 +194,8 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString()}
+      // Use an ISO date string for data attributes to avoid locale-dependent formatting
+      data-day={day.date.toISOString().split('T')[0]}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&

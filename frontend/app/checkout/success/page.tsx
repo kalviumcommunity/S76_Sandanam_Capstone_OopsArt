@@ -1,9 +1,26 @@
+"use client"
+
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle2 } from "lucide-react"
 
 export default function CheckoutSuccessPage() {
+  const [orderNumber, setOrderNumber] = useState<string | null>(null)
+  const [orderDateTime, setOrderDateTime] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Generate order info on the client to avoid SSR/client hydration mismatch
+    const id = Math.floor(Math.random() * 10000)
+    setOrderNumber(`OA-${id}`)
+
+    const now = new Date()
+    const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(now)
+    const time = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' }).format(now)
+    setOrderDateTime(`${date} at ${time}`)
+  }, [])
+
   return (
     <div className="container flex h-[calc(100vh-8rem)] items-center justify-center">
       <Card className="mx-auto max-w-md text-center">
@@ -20,10 +37,8 @@ export default function CheckoutSuccessPage() {
             registered email address.
           </p>
           <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm font-medium">Order #OA-{Math.floor(Math.random() * 10000)}</p>
-            <p className="text-xs text-muted-foreground">
-              {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
-            </p>
+            <p className="text-sm font-medium">Order #{orderNumber ?? '—'}</p>
+            <p className="text-xs text-muted-foreground">{orderDateTime ?? '—'}</p>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">

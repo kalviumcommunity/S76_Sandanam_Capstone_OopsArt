@@ -50,10 +50,9 @@ export default function ProfilePage() {
                 Settings
               </Link>
             </Button>
-            <Button size="sm" asChild>
-              <Link href="/profile/edit">
-                <Edit className="mr-2 h-4 w-4" />
-                Edit Profile
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/artist/${(user.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0,20)}`}>
+                View public profile
               </Link>
             </Button>
           </div>

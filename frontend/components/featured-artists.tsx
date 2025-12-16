@@ -98,7 +98,7 @@ export function FeaturedArtists() {
                 {artist.bio}
               </p>
               <div className="flex justify-between w-full text-sm text-muted-foreground">
-                <span>{artist.followers.toLocaleString()} followers</span>
+                <span>{new Intl.NumberFormat('en-US').format(artist.followers)} followers</span>
                 <span>{artist.artworks} artworks</span>
               </div>
               <Button asChild variant="outline" size="sm" className="w-full mt-2">
